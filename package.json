@@ -1,0 +1,15 @@
+{
+  "name": "async-fsm",
+  "version": "0.0.0",
+  "description": "an abstract finite state machine thing",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec -u tdd test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none yet!"
+  },
+  "author": "Mike B!",
+  "license": "MIT"
+}
