@@ -57,5 +57,36 @@ suite("afsm functionality",function(){
 			assert.deepEqual(states,["start"],"only the first state should have been reached");
 			done();
 		});
-	})
+	});
+
+	test("fsm handles concurrent executions",function(done){
+
+		var states = {};
+		var finish=  function(stateTable){
+
+			assert.deepEqual(stateTable["guy1"],["start","phase1","phase2","phase1"],"the states for guy 1 should be ordered correctly");
+			assert.deepEqual(stateTable["guy2"],["start"],"only the first state should have been reached by guy 2");
+			done();
+		}
+
+		var check = function(name,stateResults){
+			states[name] = stateResults
+			if(states['guy1'] && states['guy2']){
+				finish(states);
+			}
+		}
+
+		fsm("start",[],null,function(err,states,crap1,crap2){
+			assert.ifError(err,"there should be no errors");
+			assert.notEqual(states,undefined,"the final args should be passed");
+			assert.notEqual(crap1,undefined,"the final args should be passed")
+			assert.notEqual(crap2,undefined,"the final args should be passed")
+			check("guy1",states)
+		});
+		
+		fsm("start",[],true,function(err,states,crap1,crap2){
+			assert.ok(err,"there should be an error");
+			check("guy2",states);
+		});		
+	});
 });
