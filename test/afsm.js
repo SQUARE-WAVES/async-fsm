@@ -70,7 +70,7 @@ suite("afsm functionality",function(){
 		}
 
 		var check = function(name,stateResults){
-			states[name] = stateResults
+			states[name] = stateResults;
 			if(states['guy1'] && states['guy2']){
 				finish(states);
 			}
