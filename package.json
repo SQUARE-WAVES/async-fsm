@@ -1,6 +1,6 @@
 {
   "name": "async-fsm",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "an abstract finite state machine thing",
   "main": "index.js",
   "scripts": {
