@@ -50,7 +50,6 @@ suite("afsm functionality",function(){
 		});
 	});
 
-
 	test("fsm errors out",function(done){
 		fsm("start",[],true,function(err,states,crap1,crap2){
 			assert.ok(err,"there should be an error");
