@@ -88,4 +88,14 @@ suite("afsm functionality",function(){
 			check("guy2",states);
 		});		
 	});
+
+	test("invalid start state throws correct error",function(done){
+		var badStart = 'fffffff'
+
+		fsm(badStart,[],null,function(err,states,crap1,crap2){
+			assert.ok(err,"there should be an error returned async");
+			assert.notEqual(err.message.indexOf(badStart),-1, 'the invalid state should be included in the error message');
+			done();
+		});
+	});
 });
