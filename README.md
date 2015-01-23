@@ -40,3 +40,10 @@ fsm("start",the,first,args,function(err,args,they,passed,to,the,end){
 ```
 
 each method passes the values after the error and the new state, right now states are only strings, if you pass a non-string into the function it will interpret that as a request to finish the machine and call the end function.
+
+#What about exceptions
+EXCEPTIONS ARE NOT SAFE
+
+This is a pure async api, and as such it makes no effort to trap or handle excpetions. If one of your functions throws the whole operation will simply blow up and not continue.
+
+unfortunately I can't make any default way that will handle exceptions, because there is always the possiblity that an exception will be thrown after the next function is called.
