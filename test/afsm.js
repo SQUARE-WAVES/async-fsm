@@ -89,7 +89,7 @@ suite("afsm functionality",function(){
 		});		
 	});
 
-	test("invalid start state throws correct error",function(done){
+	test("invalid start state calls back with correct error",function(done){
 		var badStart = 'fffffff'
 
 		fsm(badStart,[],null,function(err,states,crap1,crap2){
