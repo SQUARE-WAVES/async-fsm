@@ -11,5 +11,8 @@
     "url": "none yet!"
   },
   "author": "Mike B!",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  }
 }
