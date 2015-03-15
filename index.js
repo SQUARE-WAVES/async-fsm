@@ -1,3 +1,21 @@
+var advanceState = function(stateTable,state,args,endFunction,cb){
+	var stateFunction = stateTable[state];
+
+	if(stateFunction === undefined){
+		//if we don't support that state, give an error
+		process.nextTick(function(){
+			endFunction.apply(null,[new Error("invalid state: " + state)].concat(args));
+		});
+	}
+	else{
+		//otherwise pass all the arguments on to the next function with the 
+		//callback added.
+		process.nextTick(function(){
+			stateFunction.apply(null,args.concat([cb]));
+		})
+	}
+}
+
 module.exports = function(stateTable){
 	
 	return function() {
@@ -7,7 +25,7 @@ module.exports = function(stateTable){
 
 		//this is to keep the optimiser happy, it doesn't like 
 		//manipulations of the arguments context variable
-		for(var i=1;i<arguments.length - 1;++i){
+		for(var i=1; i<arguments.length - 1; ++i){
 			initArgs.push(arguments[i]);
 		}
 
@@ -35,37 +53,10 @@ module.exports = function(stateTable){
 			}
 			else{
 				//we got a new state
-				var stateFunction = stateTable[newState];
-
-
-				if(stateFunction === undefined){
-					//if we don't support that state, give an error
-					process.nextTick(function(){
-						endFunction.apply(null,[new Error("invalid state: " + newState)].concat(rest));
-					});
-				}
-				else{
-					//otherwise pass all the arguments on to the next function with the 
-					//callback added.
-					process.nextTick(function(){
-						stateFunction.apply(null,rest.concat([callback]));
-					})
-				}
+				advanceState(stateTable,newState,rest,endFunction,callback)
 			}
 		}
 
-		//todo:: make this stuff a function so it isn't copy-pasted
-		var stateFunction = stateTable[startState];
-
-		if(stateFunction === undefined){
-			process.nextTick(function(){
-				endFunction.apply(null,[new Error("invalid state: " + startState)].concat(initArgs));
-			});
-		}
-		else{
-			process.nextTick(function(){
-				stateFunction.apply(null,initArgs.concat(callback));
-			})
-		}
+		advanceState(stateTable,startState,initArgs,endFunction,callback);
 	}
 }
